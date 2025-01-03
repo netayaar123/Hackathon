@@ -1,29 +1,45 @@
 import { verifyContentWithLLM } from '../services/llmService';  // Daniela needs to add the llmService
 
 // Verify content
+// Adds a new function for checking if a statement is an opinion or a lie
+const generateOpinionOrLiePrompt = (content) => {
+    return `Is the following statement an opinion or a lie? ${content}`;
+};
 
-const verifyContent = async (req, res) => {
+export { generateTypePrompt, generateFactVerificationPrompt, generateOpinionOrLiePrompt };
+
+import { verifyContentWithLLM, getTypeWithLLM, checkOpinionOrLieWithLLM } from '../services/llmService';
+import { generateTypePrompt, generateFactVerificationPrompt, generateOpinionOrLiePrompt } from '../utils/promptBuilder';
+
+const verifyAndClassifyContent = async (req, res) => {
     const { content } = req.body;
-    const prompt = `Is the following statement true? ${content}`;
+    const typePrompt = generateTypePrompt(content);
+
     try {
-        const { verdict, confidence } = await verifyContentWithLLM(prompt);
-        let userMessage;
-        switch (verdict) {
-            case 'true':
-                userMessage = `This information is likely true. Confidence: ${confidence}%`;
-                break;
-            case 'false':
-                userMessage = `This information is likely false. Confidence: ${confidence}%`;
-                break;
-            default:
-                userMessage = "Unable to verify the information reliably.";
-                break;
+        const { type } = await getTypeWithLLM(typePrompt); // Determine if it's a fact or an opinion
+
+        if (type === 'fact') {
+            const verificationPrompt = generateFactVerificationPrompt(content);
+            const { verdict, confidence } = await verifyContentWithLLM(verificationPrompt);
+
+            if (verdict === 'false') {
+                const opinionOrLiePrompt = generateOpinionOrLiePrompt(content);
+                const { classification } = await checkOpinionOrLieWithLLM(opinionOrLiePrompt);
+                const userMessage = `The statement is false. Further analysis suggests it is a(n) ${classification}.`;
+                res.status(200).json({ type, verified: false, classification, message: userMessage });
+            } else {
+                const userMessage = `The statement is a fact and it is ${verdict}. Confidence: ${confidence}%.`;
+                res.status(200).json({ type, verified: verdict, confidence, message: userMessage });
+            }
+        } else {
+            const userMessage = "The statement is an opinion and not subject to factual verification.";
+            res.status(200).json({ type, message: userMessage });
         }
-        res.status(200).json({ verified: verdict, confidence, message: userMessage });
     } catch (error) {
-        res.status(500).json({ message: "Error verifying content", error });
+        res.status(500).json({ message: "Error verifying or classifying content", error });
     }
 };
+export { verifyAndClassifyContent };
 
 // import ducks from '../data/duckData.js';
 
