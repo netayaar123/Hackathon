@@ -35,7 +35,7 @@ const Home = () => {
 
   return (
     <div className={styles.home}>
-        <h1 className={styles.headline}>Duck It</h1>
+        <h1 className={styles.headline}>BeSafe: Validate Content, Stay Safe</h1>
         <p>
             Welcome to BeSafe! This tool helps validate content for accuracy and safety.
             If necessary, it will connect you with a specialist for further assistance.
