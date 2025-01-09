@@ -16,7 +16,7 @@ function App() {
         </header>
         <main className={styles.main}>
           <Routes>
-            <Route path="/entrance" element={<Home />} />
+            <Route path="/" element={<Home />} />
           </Routes>
         </main>
         <footer className={styles.footer}>
