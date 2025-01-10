@@ -1,4 +1,4 @@
-import { verifyContentWithLLM } from '../services/llmService';  // Daniela needs to add the llmService
+//import { verifyContentWithLLM } from '../services/llmService';  // Daniela needs to add the llmService
 
 // Verify content
 // Adds a new function for checking if a statement is an opinion or a lie
@@ -9,7 +9,7 @@ const generateOpinionOrLiePrompt = (content) => {
 export { generateTypePrompt, generateFactVerificationPrompt, generateOpinionOrLiePrompt };
 
 import { verifyContentWithLLM, getTypeWithLLM, checkOpinionOrLieWithLLM } from '../services/llmService';
-import { generateTypePrompt, generateFactVerificationPrompt, generateOpinionOrLiePrompt } from '../utils/promptBuilder';
+import { generateTypePrompt, generateFactVerificationPrompt } from '../utils/promptBuilder';
 
 const verifyAndClassifyContent = async (req, res) => {
     const { content } = req.body;
