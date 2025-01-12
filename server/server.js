@@ -18,12 +18,16 @@ app.use('/images', express.static(path.join(__dirname, 'images'))); // Serve sta
 app.use(cors({
   origin: process.env.CLIENT_URL
 }));
+// Test base route - Add it here
+app.get('/', (req, res) => {
+  res.send('Server is running!');
+});
 
-// Use the routes file for all `/ducks` routes
+// Use the routes file for `/ducks` routes
 app.use('/ducks', rubberDuckRoutes);
 
 // Start server
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+  console.log(`Server is running on port ${PORT}`);
 });

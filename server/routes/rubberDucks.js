@@ -3,11 +3,8 @@ import { verifyAndClassifyContent } from '../controllers/rubberDuckController.js
 
 const router = express.Router();
 // POST content to verify and classify
-router.post('/verify-classify', verifyAndClassifyContent);
+router.post('/api/verify-classify', verifyAndClassifyContent);
 export default router;
-
-
-
 
 
 // import express from 'express';
