@@ -1,4 +1,4 @@
-import { generateResponse } from '/mnt/c/Users/Daniela/Desktop/hackathon/server/LLM/main.mjs'; 
+import { generateResponse } from '../server/LLM/main.mjs'; 
 
 // Verify content
 // Adds a new function for checking if a statement is an opinion or a lie
