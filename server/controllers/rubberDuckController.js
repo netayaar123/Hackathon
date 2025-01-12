@@ -1,4 +1,4 @@
-//import { verifyContentWithLLM } from '../services/llmService';  // Daniela needs to add the llmService
+import { generateResponse } from '../server/LLM/main.mjs';
 
 // Verify content
 // Adds a new function for checking if a statement is an opinion or a lie
