@@ -1,5 +1,5 @@
 import express from 'express';
-import { verifyAndClassifyContent } from '../controllers/rubberDuckController.js';
+import { verifyAndClassifyContent } from 'server\controllers\promptBuilder.js';
 
 const router = express.Router();
 // POST content to verify and classify
