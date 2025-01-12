@@ -1,4 +1,4 @@
-import { verifyContentWithLLM } from '../services/llmService';  // Daniela needs to add the llmService
+//import { verifyContentWithLLM } from '../services/llmService';  // Daniela needs to add the llmService
 
 // Verify content
 // Adds a new function for checking if a statement is an opinion or a lie
