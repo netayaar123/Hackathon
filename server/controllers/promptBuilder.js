@@ -7,7 +7,6 @@ const generateOpinionOrLiePrompt = (content) => {
 };
 
 export { generateTypePrompt, generateFactVerificationPrompt, generateOpinionOrLiePrompt };
-
 import { verifyContentWithLLM, getTypeWithLLM, checkOpinionOrLieWithLLM } from '../services/llmService';
 import { generateTypePrompt, generateFactVerificationPrompt } from '../utils/promptBuilder';
 
