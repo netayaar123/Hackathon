@@ -48,48 +48,31 @@ const Home = () => {
         Welcome to BeSafe! This tool helps validate content for accuracy and safety.
         If necessary, it will connect you with a specialist for further assistance.
       </p>
+      
       <textarea
         id="content-input"
-        placeholder="Enter your content here..."
-        rows="5"
-        cols="50"
-        style={{
-          width: "100%",
-          padding: "10px",
-          fontSize: "16px",
-          marginTop: "10px",
-        }}
+        placeholder="Validate your content here..."
+        className={styles.textarea}
       ></textarea>
-      <input
-        type="number"
-        id="age-input"
-        placeholder="Enter your age (optional)"
-        style={{
-          width: "100%",
-          padding: "10px",
-          marginTop: "10px",
-          fontSize: "16px",
-        }}
-      />
-      <input
-        type="text"
-        id="gender-input"
-        placeholder="Enter your gender (optional)"
-        style={{
-          width: "100%",
-          padding: "10px",
-          marginTop: "10px",
-          fontSize: "16px",
-        }}
-      />
+
+      <div className={styles.inputsRow}>
+        <input
+          type="number"
+          id="age-input"
+          placeholder="Enter your age (optional)"
+          className={styles.input}
+        />
+        <input
+          type="text"
+          id="gender-input"
+          placeholder="Enter your gender (optional)"
+          className={styles.input}
+        />
+      </div>
+
       <button
         id="validate-button"
-        style={{
-          padding: "10px 20px",
-          fontSize: "16px",
-          marginTop: "10px",
-          cursor: "pointer",
-        }}
+        className={styles.button}
         onClick={handleValidation}
       >
         Validate Content
@@ -97,14 +80,14 @@ const Home = () => {
 
       {/* Display the response message */}
       {responseMessage && (
-        <p style={{ marginTop: "10px", fontSize: "18px", color: "blue" }}>
+        <p className={styles.responseMessage}>
           {responseMessage}
         </p>
       )}
 
       {/* Display error messages */}
       {errorMessage && (
-        <p style={{ marginTop: "10px", fontSize: "18px", color: "red" }}>
+        <p className={styles.errorMessage}>
           {errorMessage}
         </p>
       )}
