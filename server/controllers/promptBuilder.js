@@ -1,4 +1,4 @@
-import { generateResponse } from '../server/LLM/main.mjs';
+import { generateResponse } from '../LLM/main.mjs';
 
 const verifyAndClassifyContent = async (req, res) => {
     const { content } = req.body;

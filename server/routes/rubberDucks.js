@@ -1,6 +1,5 @@
 import express from 'express';
-import { verifyAndClassifyContent } from 'server\controllers\promptBuilder.js';
-
+import { verifyAndClassifyContent } from '../controllers/promptBuilder.js';
 const router = express.Router();
 // POST content to verify and classify
 router.post('/api/verify-classify', verifyAndClassifyContent);

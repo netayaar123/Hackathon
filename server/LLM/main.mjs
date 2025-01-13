@@ -15,4 +15,4 @@ async function generateResponse(prompt) {
     throw error;
   }
 }
-//use this in prompt to generate response 
+export { generateResponse };
