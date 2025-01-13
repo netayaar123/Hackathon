@@ -1,42 +1,51 @@
 import { generateResponse } from '../server/LLM/main.mjs';
 
-// Verify content
-// Adds a new function for checking if a statement is an opinion or a lie
-const generateOpinionOrLiePrompt = (content) => {
-    return `Is the following statement an opinion or a lie? ${content}`;
-};
-
-export { generateTypePrompt, generateFactVerificationPrompt, generateOpinionOrLiePrompt };
-import { verifyContentWithLLM, getTypeWithLLM, checkOpinionOrLieWithLLM } from '../services/llmService';
-import { generateTypePrompt, generateFactVerificationPrompt } from '../utils/promptBuilder';
-
 const verifyAndClassifyContent = async (req, res) => {
     const { content } = req.body;
-    const typePrompt = generateTypePrompt(content);
 
     try {
-        const { type } = await getTypeWithLLM(typePrompt); // Determine if it's a fact or an opinion
+        // Create a single prompt to handle the user request
+        const classificationPrompt = `Classify the following statement as either "truth", "lie", "opinion", or "none". Only respond with one word: lie, truth, opinion, or none. Statement: ${content}`;
 
-        if (type === 'fact') {
-            const verificationPrompt = generateFactVerificationPrompt(content);
-            const { verdict, confidence } = await verifyContentWithLLM(verificationPrompt);
+        // Call the LLM to generate a classification response
+        const classificationResponse = await generateResponse(classificationPrompt);
 
-            if (verdict === 'false') {
-                const opinionOrLiePrompt = generateOpinionOrLiePrompt(content);
-                const { classification } = await checkOpinionOrLieWithLLM(opinionOrLiePrompt);
-                const userMessage = `The statement is false. Further analysis suggests it is a(n) ${classification}.`;
-                res.status(200).json({ type, verified: false, classification, message: userMessage });
-            } else {
-                const userMessage = `The statement is a fact and it is ${verdict}. Confidence: ${confidence}%.`;
-                res.status(200).json({ type, verified: verdict, confidence, message: userMessage });
-            }
-        } else {
-            const userMessage = "The statement is an opinion and not subject to factual verification.";
-            res.status(200).json({ type, message: userMessage });
+        // Parse the classification response
+        let classification = classificationResponse.trim().toLowerCase();
+
+        // Create a prompt to ask for confidence in the classification
+        const confidencePrompt = `On a scale of 0-100, how confident are you in classifying the following statement as ${classification}? Only respond with a number: ${content}`;
+
+        // Call the LLM to generate a confidence response
+        const confidenceResponse = await generateResponse(confidencePrompt);
+
+        // Parse the confidence response and convert it to a number
+        const confidence = parseInt(confidenceResponse.trim(), 10);
+
+        // If confidence is less than 60, reclassify as "none"
+        if (isNaN(confidence) || confidence < 60) {
+            classification = "none";
         }
+
+        // Prepare the user-facing message based on the classification
+        let userMessage;
+        if (classification === "truth") {
+            userMessage = "The statement is classified as truth.";
+        } else if (classification === "lie") {
+            userMessage = "The statement is classified as a lie.";
+        } else if (classification === "opinion") {
+            userMessage = "The statement is classified as an opinion.";
+        } else if (classification === "none") {
+            userMessage = "The statement could not be classified or confidence was too low.";
+        } else {
+            userMessage = "Unable to classify the statement. Please try again.";
+        }
+
+        // Send the response back to the client
+        res.status(200).json({ classification, confidence, message: userMessage });
     } catch (error) {
         res.status(500).json({ message: "Error verifying or classifying content", error });
     }
 };
-export { verifyAndClassifyContent };
 
+export { verifyAndClassifyContent };
