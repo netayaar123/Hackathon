@@ -24,10 +24,10 @@ app.get('/', (req, res) => {
 });
 
 // Use the routes file for `/ducks` routes
-app.use('/ducks', rubberDuckRoutes);
+app.use('/api', rubberDuckRoutes);
 
 // Start server
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5012;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
