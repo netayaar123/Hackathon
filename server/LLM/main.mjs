@@ -3,9 +3,7 @@ import dotenv from "dotenv";
 
 // Load the `token.env` file
 dotenv.config({ path: "./server/token.env" });
-// Debug log to check if the API key is loaded
 console.log("Loaded API Key:", process.env.GEMINI_API_KEY);
-
 // Access the API key from the .env file
 const apiKey = process.env.GEMINI_API_KEY;
 

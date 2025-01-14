@@ -25,6 +25,7 @@ const verifyAndClassifyContent = async (req, res) => {
 
         // If confidence is less than 60, reclassify as "none"
         if (isNaN(confidence) || confidence < 60) {
+            console.log('Low confidence or missing confidence data');
             classification = "none";
         }
 
@@ -60,7 +61,8 @@ const verifyAndClassifyContent = async (req, res) => {
         // Send the response back to the client with the category in a separate field
         res.status(200).json({ classification, confidence, category, message: userMessage });
     } catch (error) {
-        res.status(500).json({ message: "Error verifying or classifying content", error });
+        console.error("Detailed error message:", error);
+        res.status(500).json({ message: "Error verifying or classifying content", error: error.message });
     }
 };
 
