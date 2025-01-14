@@ -3,8 +3,8 @@ const {
   connectToDatabase,
   InsertContactInfo,
   getContactInfoByCategory,
-  deleteContactInfoById, // Import the delete function
-} = require('../database');
+  deleteContactInfoById,
+} = require('./database');
 
 async function testDatabase() {
   console.log('Starting database test...');
