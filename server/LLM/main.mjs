@@ -2,7 +2,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import dotenv from "dotenv";
 
 // Load the `token.env` file
-dotenv.config({ path: "./server/token.env" });
+dotenv.config({ path: "../server/token.env" });
 console.log("Loaded API Key:", process.env.GEMINI_API_KEY);
 // Access the API key from the .env file
 const apiKey = process.env.GEMINI_API_KEY;

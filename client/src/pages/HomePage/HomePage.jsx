@@ -20,15 +20,16 @@ const Home = () => {
     try {
       // Make API call to verify and classify content
       const response = await axiosInstance.post('/verify-classify', {
-        text,
-        age,
-        gender,
+        content: text
+        // age,
+        // gender,
       });
 
       // Set the server response message
       setResponseMessage(response.data.message || "Validation successful!");
       setErrorMessage(""); // Clear any previous errors
     } catch (error) {
+      console.log(error)
       console.error("Error during validation:", error);
 
       // Handle error messages
