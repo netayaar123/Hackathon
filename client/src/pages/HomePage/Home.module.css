@@ -120,8 +120,8 @@
 
 .responseMessage {
   margin-top: 10px;
-  font-size: 18px;
-  color: blue;
+  font-size: 40px;
+  color: lightskyblue;
 }
 
 .errorMessage {
