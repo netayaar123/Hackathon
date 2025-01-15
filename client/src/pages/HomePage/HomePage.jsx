@@ -14,8 +14,8 @@ const Home = () => {
 
   const handleValidation = async () => {
     const text = document.getElementById("content-input").value;
-    const age = document.getElementById("age-input").value || null;
-    const gender = document.getElementById("gender-input").value || null;
+    //const age = document.getElementById("age-input").value || null;
+    //const gender = document.getElementById("gender-input").value || null;
 
     try {
       // Make API call to verify and classify content
