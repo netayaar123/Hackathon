@@ -6,6 +6,7 @@ import dotenv from 'dotenv';
 import rubberDuckRoutes from './routes/rubberDucks.js'; // Import the routes
 import { connectToDatabase } from '../Database/database.js'; // Import the database connection function
 
+// Use import.meta.url instead of __filename
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -13,6 +14,7 @@ dotenv.config();
 
 const app = express();
 
+// Middleware
 app.use(express.json());
 app.use('/images', express.static(path.join(__dirname, 'images'))); // Serve static images
 
@@ -25,21 +27,24 @@ app.get('/', (req, res) => {
   res.send('Server is running!');
 });
 
-// Add a route to test the database connection
-app.get('/api/test-db', async (req, res) => {
-  try {
-    await connectToDatabase(); // Attempt to connect to the database
-    res.status(200).json({ message: 'Successfully connected to the database.' });
-  } catch (error) {
-    res.status(500).json({ message: 'Failed to connect to the database.', error: error.message });
-  }
-});
-
-// Use the routes file for `/ducks` routes
+// Use the routes file for /ducks routes
 app.use('/api', rubberDuckRoutes);
 
-// Start server
-const PORT = process.env.PORT || 5012;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+// Function to start the server after connecting to the database
+async function startServer() {
+  try {
+    await connectToDatabase(); // Connect to the database
+    console.log('Connected to the database successfully.');
+
+    const PORT = process.env.PORT || 5012;
+    app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
+    });
+  } catch (error) {
+    console.error('Failed to connect to the database:', error.message);
+    process.exit(1); // Exit the process if the database connection fails
+  }
+}
+
+// Start the server
+startServer();
