@@ -45,10 +45,11 @@ const Home = () => {
   return (
     <div className={styles.home}>
       <h1 className={styles.headline}>BeSafe: Validate Content, Stay Safe</h1>
-      <p>
+      <p className={styles.welcomeText}>
         Welcome to BeSafe! This tool helps validate content for accuracy and safety.
         If necessary, it will connect you with a specialist for further assistance.
       </p>
+
       
       <textarea
         id="content-input"
@@ -81,10 +82,11 @@ const Home = () => {
 
       {/* Display the response message */}
       {responseMessage && (
-        <p className={styles.responseMessage}>
-          {responseMessage}
-        </p>
+        <p className={styles.responseMessage}
+             dangerouslySetInnerHTML={{ __html: responseMessage }}
+        ></p>
       )}
+
 
       {/* Display error messages */}
       {errorMessage && (

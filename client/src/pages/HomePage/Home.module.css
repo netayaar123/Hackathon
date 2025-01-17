@@ -25,12 +25,25 @@
 }
 
 .headline {
-  font-size: 2.5em;
+  font-size: 2.8em;
   margin-bottom: 20px;
   color: #FF6FB5; /* Bright pink for a fun, girly touch */
   font-family: 'Poppins', sans-serif;
   text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
 }
+
+.welcomeText {
+  font-size: 1.5em; /* Slightly smaller than before */
+  color: #FF6FB5; /* Pink color */
+  font-family: 'Poppins', sans-serif; /* Same font as the headline */
+  text-align: center;
+  text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  line-height: 1.5; /* Improved readability */
+  font-weight: 500; /* Slightly lighter for differentiation */
+  max-width: 800px; /* Limit width */
+  margin: 0 auto 15px auto; /* Center horizontally and add bottom margin */
+}
+
 
 .textareaLabel {
   font-size: 20px;
@@ -47,18 +60,20 @@
   padding: 20px;
   margin-top: 20px;
   font-size: 18px; /* Larger font for readability */
-  border: 3px solid #FF6FB5; /* Thicker border for emphasis */
+  border: 2px solid #FF6FB5; /* Adjusted border thickness for a softer look */
   border-radius: 15px; /* Rounded edges for a softer look */
   outline: none;
-  font-family: 'Roboto', sans-serif;
-  background: #FDF9FF; /* Soft pastel background */
+  font-family: 'Poppins', sans-serif; /* Matches the headline font */
+  background: #FAF3FF; /* Soft pastel background */
+  color: #53474F; /* Darker text for readability */
   transition: box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
 .textarea::placeholder {
   color: #FF6FB5; /* Matching placeholder color */
   font-weight: 600;
-  font-size: 16px; /* Slightly larger for visibility */
+  font-family: 'Poppins', sans-serif; /* Matches input text font */
+  font-size: 16px; /* Readable placeholder size */
 }
 
 .textarea:focus {
@@ -78,14 +93,21 @@
 .input {
   width: 100%;
   max-width: 250px; /* Define width for inputs */
-  padding: 12px;
-  font-size: 16px;
+  padding: 15px;
+  font-size: 18px; /* Slightly larger font for readability */
   border: 2px solid #FF6FB5; /* Match the theme */
   border-radius: 10px;
   outline: none;
-  background: #F9F9FF; /* Light background for better contrast */
-  font-family: 'Roboto', sans-serif;
+  background: #FAF3FF; /* Soft pastel background */
+  font-family: 'Poppins', sans-serif; /* Matches the headline font */
+  color: #53474F; /* Darker text for readability */
   transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.input::placeholder {
+  font-family: 'Poppins', sans-serif; /* Matches input text font */
+  font-size: 16px; /* Slightly larger placeholder font size */
+  color: #FF6FB5; /* Matching theme color */
 }
 
 .input:focus {
@@ -120,8 +142,21 @@
 
 .responseMessage {
   margin-top: 10px;
-  font-size: 40px;
-  color: lightskyblue;
+  font-size: 24px; /* Reduced font size */
+  color: #7BB1F9; /* Softer light blue for a youthful look */
+  font-family: 'Poppins', sans-serif; /* Friendly font */
+  text-align: center; /* Center text */
+}
+
+.responseMessage a {
+  color: #FF6FB5; /* Match your theme */
+  text-decoration: underline;
+  transition: color 0.3s ease;
+  font-weight: bold; /* Bold for better visibility */
+}
+
+.responseMessage a:hover {
+  color: #53474F; /* Slightly darker on hover */
 }
 
 .errorMessage {

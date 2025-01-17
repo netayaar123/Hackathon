@@ -46,7 +46,7 @@ const verifyAndClassifyContent = async (req, res) => {
 
             if (categoryData && categoryData.length > 0) {
                 const { URL, description } = categoryData[0];
-                userMessage = `The statement is classified as a lie. If you need help or more information about this topic, you can visit the following resource: ${URL}. ${description}`;
+                userMessage = `The statement is classified as a lie. If you need help or more information about this topic, you can visit the following resource: <a href="${URL}" target="_blank">${URL}</a>. ${description}`;
             } else {
                 userMessage = `The statement is classified as a lie.`;
             }
