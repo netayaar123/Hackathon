@@ -64,13 +64,17 @@ const Home = () => {
           placeholder="Enter your age (optional)"
           className={styles.input}
         />
-        <input
-          type="text"
+        <select
           id="gender-input"
-          placeholder="Enter your gender (optional)"
           className={styles.input}
-        />
-      </div>
+          defaultValue=""
+        >
+        <option value="" disabled>Select your gender (optional)</option>
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+        <option value="Other">Other</option>
+        </select>
+        </div>
 
       <button
         id="validate-button"
