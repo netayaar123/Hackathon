@@ -14,17 +14,17 @@ const Home = () => {
 
   const handleValidation = async () => {
     const text = document.getElementById("content-input").value;
-    //const age = document.getElementById("age-input").value || null;
-    //const gender = document.getElementById("gender-input").value || null;
+    const age = document.getElementById("age-input").value || null;
+    const gender = document.getElementById("gender-input").value || null;
 
     try {
       // Make API call to verify and classify content
       const response = await axiosInstance.post('/verify-classify', {
-        content: text
-        // age,
-        // gender,
+        content: text,
+        age: age,
+        gender: gender
       });
-
+      console.log("Data being sent to the server:", { content: text, age: age, gender: gender });
       // Set the server response message
       setResponseMessage(response.data.message || "Validation successful!");
       setErrorMessage(""); // Clear any previous errors
