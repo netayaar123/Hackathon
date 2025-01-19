@@ -16,7 +16,7 @@ document.getElementById("extract-text").addEventListener("click", () => {
                   !line.startsWith("#") && // Exclude hashtags
                   !line.match(/^\d+$/) && // Exclude lines that are only numbers
                   !line.match(/\b\d+\b/) && // Exclude lines containing standalone numbers
-                  !["follow", "more from", "log in", "explore", "communities", "about", "change palette", "close notes", "original poster", "sign me up", "more like this"].some((excluded) =>
+                  !["follow", "more from", "log in", "explore", "communities", "about", "change palette", "close notes", "original poster", "sign me up", "more like this","go premium"].some((excluded) =>
                     line.toLowerCase().includes(excluded)
                   )
                 )
