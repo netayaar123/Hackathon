@@ -73,11 +73,24 @@ const verifyAndClassifyContent = async (req, res) => {
                 ageGenderMessage = gender === "Female" ? "This may affect women." : gender === "Male" ? "This may affect men." : "This may affect others.";
             }
 
-            if (categoryData && categoryData.length > 0) {
-                const { URL, description } = categoryData[0];
-                userMessage = `The statement is classified as a ${classification}. ${ageGenderMessage} If you need help or more information about this topic, you can visit the following resource: <a href="${URL}" target="_blank">${URL}</a>. ${description}`;
+            // Check if the opinion is harmful and adjust the message accordingly
+            if (classification === "opinion") {
+                const harmfulOpinionPrompt = `Is the following opinion harmful? Answer with "yes" or "no". Statement: ${content}`;
+                const harmfulOpinionResponse = await generateResponse(harmfulOpinionPrompt);
+                const isHarmfulOpinion = harmfulOpinionResponse.trim().toLowerCase();
+
+                if (isHarmfulOpinion === "yes") {
+                    userMessage = `The statement is classified as a harmful opinion. ${ageGenderMessage} If you need help or more information about this topic, you can visit the following resource: <a href="${categoryData[0]?.URL}" target="_blank">${categoryData[0]?.URL}</a>. ${categoryData[0]?.description}`;
+                } else {
+                    userMessage = `The statement is classified as an opinion. ${ageGenderMessage}`;
+                }
             } else {
-                userMessage = `The statement is classified as a ${classification}. ${ageGenderMessage} No specific resource found.`;
+                if (categoryData && categoryData.length > 0) {
+                    const { URL, description } = categoryData[0];
+                    userMessage = `The statement is classified as a ${classification}. ${ageGenderMessage} If you need help or more information about this topic, you can visit the following resource: <a href="${URL}" target="_blank">${URL}</a>. ${description}`;
+                } else {
+                    userMessage = `The statement is classified as a ${classification}. ${ageGenderMessage} No specific resource found.`;
+                }
             }
         } else if (classification === "none") {
             userMessage = "The statement could not be classified or confidence was too low.";
