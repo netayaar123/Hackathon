@@ -3,28 +3,66 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Text Extractor</title>
+  <title>Reality Checker</title>
+  <!-- Link to Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
   <style>
+    /* General body styles */
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Playfair Display', serif; /* Elegant serif font */
       margin: 10px;
       max-width: 500px;
+      background-color: #ffe6f2; /* Light pink background */
+      color: #4a4a4a; /* Darker text color for contrast */
     }
+
+    h1 {
+      text-align: center;
+      color: #ff66b2; /* Bright pink */
+      margin-bottom: 20px;
+      font-size: 25px;
+    }
+
+    button {
+      display: block;
+      margin: 0 auto;
+      padding: 10px 20px;
+      background-color: #ff66b2; /* Bright pink */
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      font-family: 'Arial', sans-serif; /* Keep button font simple */
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    button:hover {
+      background-color: #ff3385; /* Darker pink on hover */
+    }
+
     #content {
-      margin-top: 10px;
+      margin-top: 20px;
       white-space: pre-wrap;
       overflow: auto;
       max-height: 200px;
-      border: 1px solid #ccc;
-      padding: 5px;
-      background: #f9f9f9;
+      border: 1px solid #ff99cc; /* Light pink border */
+      padding: 10px;
+      background: #fff0f5; /* Very light pink background */
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Add subtle animations */
+    button, #content {
+      transition: all 0.3s ease-in-out;
     }
   </style>
 </head>
 <body>
-  <h1>Text Extractor</h1>
-  <button id="extract-text">Extract Text</button>
-  <div id="content"></div>
+  <h1>Reality Check ✔🌸</h1>
+  <button id="extract-text">check</button>
+  <div id="content">Extracted text will appear here...</div>
   <script src="popup.js"></script>
 </body>
 </html>
