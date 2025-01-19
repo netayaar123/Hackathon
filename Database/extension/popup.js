@@ -5,39 +5,41 @@ document.getElementById("extract-text").addEventListener("click", () => {
         {
           target: { tabId: tabs[0].id },
           func: () => {
-            // Helper function to clean and filter text
-            function filterRelevantText(text) {
-              return text
+            // Helper function to clean, filter, and split text into statements
+            function filterAndLabelStatements(text) {
+              const statements = text
                 .split("\n") // Split text into lines
                 .map((line) => line.trim()) // Remove leading/trailing spaces
                 .filter((line) =>
                   line.split(/\s+/).length > 1 && // Exclude single-word lines
-                  line.match(/^[A-Za-z]/) && // Exclude lines starting with special characters or numbers
+                  /^[A-Za-z]/.test(line) && // Exclude lines not starting with a letter
                   !line.startsWith("#") && // Exclude hashtags
                   !line.match(/^\d+$/) && // Exclude lines that are only numbers
                   !line.match(/\b\d+\b/) && // Exclude lines containing standalone numbers
-                  !line.toLowerCase().includes("follow") && // Exclude "Follow"
-                  !line.toLowerCase().includes("more from") && // Exclude "More from"
-                  !line.toLowerCase().includes("log in") && // Exclude "Log in"
-                  !line.toLowerCase().includes("explore") && // Exclude
-                  !line.toLowerCase().includes("communities") && // Exclude
-                  !line.toLowerCase().includes("about") && // Exclude
-                  !line.toLowerCase().includes("change palette") && // Exclude
-                  !line.toLowerCase().includes("Close notes") && // Exclude
-                  !line.toLowerCase().includes("original poster") && // Exclude
-                  !line.toLowerCase().includes("sign me up") && // Exclude
-                  !line.toLowerCase().includes("more like this") && // Exclude
-                  isNaN(Number(line)) // Exclude standalone numbers
+                  !["follow", "more from", "log in", "explore", "communities", "about", "change palette", "close notes", "original poster", "sign me up", "more like this"].some((excluded) =>
+                    line.toLowerCase().includes(excluded)
+                  )
                 )
-                .join("\n"); // Join filtered lines
+                .join(" ") // Join all lines into a single block of text
+                .split(/[.!?]+/) // Split into sentences based on punctuation
+                .map((sentence) => sentence.trim()) // Trim each sentence
+                .filter((sentence) => sentence.length > 0); // Remove empty sentences
+  
+              // Label each statement
+              return statements
+                .map((statement, index) => `${index + 1}=${statement}`)
+                .join("\n");
             }
   
             // Extract all visible text on the page
             const rawText = document.body.innerText || "";
-            // Apply the filter to clean and focus on relevant lines
-            const filteredText = filterRelevantText(rawText);
+            // Apply the filter and labeling functionality
+            const labeledStatements = filterAndLabelStatements(rawText);
   
-            return filteredText || "No relevant content found.";
+            console.log("Raw text:", rawText); // Debugging log
+            console.log("Labeled statements:", labeledStatements); // Debugging log
+  
+            return labeledStatements || "No relevant content found.";
           },
         },
         (results) => {
