@@ -7,7 +7,7 @@
   justify-content: center;
   padding: 20px;
   text-align: center;
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 
 .headline {
@@ -176,7 +176,6 @@
   font-family: 'Poppins', sans-serif;
   font-size: 16px;
 }
-
 @keyframes loadingAnimation {
   0% {
     background-color: #FF6FB5; /* Pink */
@@ -192,10 +191,67 @@
   }
 }
 
-.loading-indicator {
-  width: 50px; /* Width of the loading element */
-  height: 50px; /* Height of the loading element */
-  border-radius: 50%; /* Make it a circle */
-  animation: loadingAnimation 1s infinite ease-in-out; /* Apply the animation */
-  margin: 20px auto; /* Center it */
+.loadingOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.8); /* Light overlay background */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000; /* Ensure it is above other elements */
 }
+
+.loadingSpinner {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%; /* Circle shape */
+  animation: loadingAnimation 1s infinite ease-in-out; /* Pulsing animation */
+}
+/* Gradient border for input and textarea */
+.input,
+.textarea {
+  border: 2px solid transparent; /* Transparent border for gradient background */
+  border-radius: 10px;
+  background-image: linear-gradient(#FAF3FF, #FAF3FF), linear-gradient(135deg, #FF6FB5, #7BB1F9);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+}
+
+.textareaSmall {
+  border: 2px solid transparent; /* Transparent border for gradient background */
+  border-radius: 10px;
+  background-image: linear-gradient(#FAF3FF, #FAF3FF), linear-gradient(135deg, #FF6FB5, #7BB1F9);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+}
+
+/* Placeholder styling for matching gradient */
+.input::placeholder,
+.textarea::placeholder {
+  color: #FF6FB5;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  font-size: 16px;
+}
+
+
+.responseBox {
+  max-width: 900px;
+  width: 100%;
+  max-height: calc(100vh - 150px); /* Subtract fixed padding from viewport height */
+  overflow-y: auto; /* Scroll if content exceeds max height */
+  padding: 20px;
+  background: #DFF6FF;
+  border: 2px solid #4A90E2;
+  border-radius: 20px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 18px; /* Slightly smaller font for larger content */
+  line-height: 1.6;
+  color: #004E75;
+  text-align: left;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+

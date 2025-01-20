@@ -1,5 +1,5 @@
-import styles from './Home.module.css';
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import styles from "./Home.module.css";
 import axiosInstance from "../../services/api";
 
 const Home = () => {
@@ -9,9 +9,24 @@ const Home = () => {
   const [userContent, setUserContent] = useState(""); // Tracks user input content
   const [isLoading, setIsLoading] = useState(false); // Tracks loading state
 
-  // Set the page title
   useEffect(() => {
     document.title = "The Reality Check: Validate Content";
+  }, []);
+
+  // Parallax scrolling effect
+  useEffect(() => {
+    const handleScroll = () => {
+      const elements = document.querySelectorAll(`.${styles.parallax}`);
+      elements.forEach((el) => {
+        const rect = el.getBoundingClientRect();
+        if (rect.top < window.innerHeight - 100) {
+          el.classList.add(styles.visible);
+        }
+      });
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const handleValidation = async () => {
@@ -19,28 +34,27 @@ const Home = () => {
     const text = document.getElementById("content-input").value;
     const ageInput = document.getElementById("age-input");
     const genderInput = document.getElementById("gender-input");
-    
-    // Gracefully handle age/gender if the user never enters them
-    const age = ageInput?.value || null;  
+
+    const age = ageInput?.value || null;
     const gender = genderInput?.value || null;
 
     try {
-      const response = await axiosInstance.post('/verify-classify', {
+      const response = await axiosInstance.post("/verify-classify", {
         content: text,
         age: age,
         gender: gender,
       });
       setResponseMessage(response.data.message || "Validation successful!");
-      setUserContent(text); // Save the user's input
-      setHasResponse(true); // Mark that a response was received
-      setErrorMessage(""); // Clear previous errors
+      setUserContent(text);
+      setHasResponse(true);
+      setErrorMessage("");
     } catch (error) {
       console.error("Error during validation:", error);
       setResponseMessage("");
       setErrorMessage("Failed to validate content. Please try again.");
-      setHasResponse(false); // Clear the response if validation fails
+      setHasResponse(false);
     } finally {
-      setIsLoading(false); // Hide loading animation
+      setIsLoading(false);
     }
   };
 
@@ -53,21 +67,20 @@ const Home = () => {
         </div>
       )}
 
-      <h1 className={styles.headline}>The Reality Check: Validate Content, Stay Safe</h1>
-      <p className={styles.welcomeText}>
+      <h1 className={`${styles.headline} ${styles.parallax}`}>The Reality Check: Validate Content, Stay Safe</h1>
+      <p className={`${styles.welcomeText} ${styles.parallax}`}>
         Welcome to BeSafe! This tool helps validate content for accuracy and safety.
         If necessary, it will connect you with a specialist for further assistance.
       </p>
 
-      <div className={styles.inputSection}>
+      <div className={`${styles.inputSection} ${styles.parallax}`}>
         <textarea
           id="content-input"
           placeholder="Validate your content here..."
           className={hasResponse ? styles.textareaSmall : styles.textarea}
-          defaultValue={userContent} // Pre-fill the text box with the last input
+          defaultValue={userContent}
         ></textarea>
 
-        {/* Always render age and gender inputs */}
         <div className={styles.inputsRow}>
           <input
             type="number"
@@ -90,9 +103,8 @@ const Home = () => {
         </button>
       </div>
 
-      {/* Display response below the input */}
       {hasResponse && (
-        <div className={styles.responseSection}>
+        <div className={`${styles.responseSection} ${styles.parallax}`}>
           <div
             className={styles.responseBox}
             dangerouslySetInnerHTML={{ __html: responseMessage }}
