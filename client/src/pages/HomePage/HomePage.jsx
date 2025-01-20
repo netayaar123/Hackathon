@@ -1,105 +1,104 @@
 import styles from './Home.module.css';
-import RandomDuck from '../../components/RandomDuck/RandomDuck.jsx';
 import { useEffect, useState } from "react";
 import axiosInstance from "../../services/api";
 
 const Home = () => {
-  const [responseMessage, setResponseMessage] = useState(""); // State for server response
-  const [errorMessage, setErrorMessage] = useState(""); // State for errors
+  const [responseMessage, setResponseMessage] = useState(""); // Server response
+  const [hasResponse, setHasResponse] = useState(false); // Tracks if response exists
+  const [errorMessage, setErrorMessage] = useState(""); // Tracks error state
+  const [userContent, setUserContent] = useState(""); // Tracks user input content
+  const [isLoading, setIsLoading] = useState(false); // Tracks loading state
 
   // Set the page title
   useEffect(() => {
-    document.title = "BeSafe - Validate Your Content";
+    document.title = "The Reality Check: Validate Content";
   }, []);
 
   const handleValidation = async () => {
+    setIsLoading(true); // Show loading animation
     const text = document.getElementById("content-input").value;
     const age = document.getElementById("age-input").value || null;
     const gender = document.getElementById("gender-input").value || null;
 
     try {
-      // Make API call to verify and classify content
       const response = await axiosInstance.post('/verify-classify', {
         content: text,
         age: age,
-        gender: gender
+        gender: gender,
       });
-      console.log("Data being sent to the server:", { content: text, age: age, gender: gender });
-      // Set the server response message
       setResponseMessage(response.data.message || "Validation successful!");
-      setErrorMessage(""); // Clear any previous errors
+      setUserContent(text); // Save the user's input
+      setHasResponse(true); // Mark that a response was received
+      setErrorMessage(""); // Clear previous errors
     } catch (error) {
-      console.log(error)
       console.error("Error during validation:", error);
-
-      // Handle error messages
       setResponseMessage("");
-      if (error.response && error.response.data && error.response.data.message) {
-        setErrorMessage(error.response.data.message);
-      } else {
-        setErrorMessage("Failed to validate content. Please try again.");
-      }
+      setErrorMessage("Failed to validate content. Please try again.");
+      setHasResponse(false); // Clear the response if validation fails
+    } finally {
+      setIsLoading(false); // Hide loading animation
     }
   };
 
   return (
     <div className={styles.home}>
-      <h1 className={styles.headline}>BeSafe: Validate Content, Stay Safe</h1>
+      {/* Loading Animation */}
+      {isLoading && (
+        <div className={styles.loadingOverlay}>
+          <div className={styles.loadingSpinner}></div>
+        </div>
+      )}
+
+      <h1 className={styles.headline}>The Reality Check: Validate Content, Stay Safe</h1>
       <p className={styles.welcomeText}>
         Welcome to BeSafe! This tool helps validate content for accuracy and safety.
         If necessary, it will connect you with a specialist for further assistance.
       </p>
 
-      
-      <textarea
-        id="content-input"
-        placeholder="Validate your content here..."
-        className={styles.textarea}
-      ></textarea>
+      <div className={styles.inputSection}>
+        <textarea
+          id="content-input"
+          placeholder="Validate your content here..."
+          className={hasResponse ? styles.textareaSmall : styles.textarea}
+          defaultValue={userContent} // Pre-fill the text box with the last input
+        ></textarea>
 
-      <div className={styles.inputsRow}>
-        <input
-          type="number"
-          id="age-input"
-          placeholder="Enter your age (optional)"
-          className={styles.input}
-        />
-        <select
-          id="gender-input"
-          className={styles.input}
-          defaultValue=""
-        >
-        <option value="" disabled>Select your gender (optional)</option>
-        <option value="Male">Male</option>
-        <option value="Female">Female</option>
-        <option value="Other">Other</option>
-        </select>
+        {/* Only show age and gender inputs if no response has been generated */}
+        {!hasResponse && (
+          <div className={styles.inputsRow}>
+            <input
+              type="number"
+              id="age-input"
+              placeholder="Enter your age (optional)"
+              className={styles.input}
+            />
+            <select id="gender-input" className={styles.input} defaultValue="">
+              <option value="" disabled>
+                Select your gender (optional)
+              </option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+        )}
+
+        <button className={styles.button} onClick={handleValidation}>
+          Validate Content
+        </button>
+      </div>
+
+      {/* Display response below the input */}
+      {hasResponse && (
+        <div className={styles.responseSection}>
+          <div
+            className={styles.responseBox}
+            dangerouslySetInnerHTML={{ __html: responseMessage }}
+          ></div>
         </div>
-
-      <button
-        id="validate-button"
-        className={styles.button}
-        onClick={handleValidation}
-      >
-        Validate Content
-      </button>
-
-      {/* Display the response message */}
-      {responseMessage && (
-        <p className={styles.responseMessage}
-             dangerouslySetInnerHTML={{ __html: responseMessage }}
-        ></p>
       )}
 
-
-      {/* Display error messages */}
-      {errorMessage && (
-        <p className={styles.errorMessage}>
-          {errorMessage}
-        </p>
-      )}
-
-      <RandomDuck />
+      {errorMessage && <div className={styles.errorMessage}>{errorMessage}</div>}
     </div>
   );
 };
