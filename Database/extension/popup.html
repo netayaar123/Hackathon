@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,16 +10,17 @@
   <style>
     /* General body styles */
     body {
-      font-family: 'Playfair Display', serif; /* Elegant serif font */
+      font-family: 'Playfair Display', serif;
       margin: 10px;
-      max-width: 500px;
-      background-color: #ffe6f2; /* Light pink background */
-      color: #4a4a4a; /* Darker text color for contrast */
+      max-width: 700px;
+      /* Increased width */
+      background-color: #ffe6f2;
+      color: #4a4a4a;
     }
 
     h1 {
       text-align: center;
-      color: #ff66b2; /* Bright pink */
+      color: #ff66b2;
       margin-bottom: 20px;
       font-size: 25px;
     }
@@ -27,42 +29,95 @@
       display: block;
       margin: 0 auto;
       padding: 10px 20px;
-      background-color: #ff66b2; /* Bright pink */
+      background-color: #ff66b2;
       color: white;
       border: none;
       border-radius: 5px;
       font-size: 16px;
-      font-family: 'Arial', sans-serif; /* Keep button font simple */
+      font-family: 'Arial', sans-serif;
       cursor: pointer;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
 
     button:hover {
-      background-color: #ff3385; /* Darker pink on hover */
+      background-color: #ff3385;
     }
 
+    /* Updated #content for clean text rendering */
     #content {
       margin-top: 20px;
-      white-space: pre-wrap;
+      white-space: normal;
       overflow: auto;
-      max-height: 200px;
-      border: 1px solid #ff99cc; /* Light pink border */
-      padding: 10px;
-      background: #fff0f5; /* Very light pink background */
+      max-height: 300px;
+      border: 1px solid #ff99cc;
+      padding: 20px;
+      background: #fff0f5;
       border-radius: 5px;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      font-size: 1em;
+      line-height: 1.6;
+      word-wrap: break-word;
+
+      /* Placeholder text style */
+      text-align: center;
+      /* Center align the placeholder text */
+      font-style: italic;
+      /* Make the placeholder text italic */
+      color: #525050;
+      /* Use a light gray color for the placeholder text */
+      font-size: 0.8em;
+
+      /* the font size 
+
     }
 
-    /* Add subtle animations */
-    button, #content {
-      transition: all 0.3s ease-in-out;
-    }
+
+    /* Styles for dynamically added response-box */
+      .response-box {
+        background-color: #fff0f5;
+        border: 1px solid #ff99cc;
+        border-radius: 8px;
+        padding: 15px;
+        margin-top: 15px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        text-align: left;
+      }
+
+      /* Harmful sentence emphasis */
+      .harmful-sentence {
+        font-weight: bold;
+        color: #d9534f;
+        font-size: 1.2em;
+        margin-bottom: 15px;
+        text-align: center;
+      }
+
+      /* Clean and justified response message */
+      .response-message {
+        font-size: 1em;
+        color: #4a4a4a;
+        line-height: 1.6;
+        text-align: justify;
+      }
+
+      /* Links inside response-message */
+      .response-message a {
+        color: #ff66b2;
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      .response-message a:hover {
+        text-decoration: underline;
+      }
   </style>
 </head>
+
 <body>
   <h1>Reality Check ✔🌸</h1>
   <button id="extract-text">check</button>
-  <div id="content">Extracted text will appear here...</div>
+  <div id="content">click to display response</div>
   <script src="popup.js"></script>
 </body>
+
 </html>

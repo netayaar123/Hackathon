@@ -4,32 +4,51 @@ document.getElementById("extract-text").addEventListener("click", () => {
       {
         target: { tabId: tabs[0].id },
         func: () => {
-          // Helper function to clean, filter, and split text into statements
-          function filterAndLabelStatements(text) {
-            const statements = text
-              .split("\n") // Split text into lines
-              .map((line) => line.trim()) // Remove leading/trailing spaces
-              .filter((line) =>
-                line.split(/\s+/).length > 1 && // Exclude single-word lines
-                /^[A-Za-z]/.test(line) && // Exclude lines not starting with a letter
-                !line.startsWith("#") && // Exclude hashtags
-                !line.match(/^\d+$/) && // Exclude lines that are only numbers
-                !line.match(/\b\d+\b/) && // Exclude lines containing standalone numbers
-                !["follow", "more from", "log in", "explore", "communities", "about", "change palette", "close notes", "original poster", "sign me up", "more like this", "go premium"].some((excluded) =>
-                  line.toLowerCase().includes(excluded)
-                )
-              )
-              .join(" ") // Join all lines into a single block of text
-              .split(/[.!?]+/) // Split into sentences based on punctuation
-              .map((sentence) => sentence.trim()) // Trim each sentence
-              .filter((sentence) => sentence.length > 0); // Remove empty sentences
-
-            return statements.join("\n");
+          // Helper function to clean and format text
+          function cleanText(text) {
+            return text
+              .replace(/\s+/g, " ") // Replace multiple spaces/newlines with a single space
+              .replace(/\n/g, " ") // Replace newlines with spaces
+              .trim(); // Remove leading/trailing spaces
           }
 
-          // Extract all visible text on the page
+          // Helper function to filter and label statements
+          function filterAndLabelStatements(text) {
+            const statements = text
+              .split("\n")
+              .map((line) => line.trim())
+              .filter(
+                (line) =>
+                  line.split(/\s+/).length > 1 &&
+                  /^[A-Za-z]/.test(line) &&
+                  !line.startsWith("#") &&
+                  !line.match(/^\d+$/) &&
+                  !line.match(/\b\d+\b/) &&
+                  ![
+                    "follow",
+                    "more from",
+                    "log in",
+                    "explore",
+                    "communities",
+                    "about",
+                    "change palette",
+                    "close notes",
+                    "original poster",
+                    "sign me up",
+                    "more like this",
+                    "go premium",
+                  ].some((excluded) => line.toLowerCase().includes(excluded))
+              )
+              .join(" ")
+              .split(/[.!?]+/)
+              .map((sentence) => sentence.trim())
+              .filter((sentence) => sentence.length > 0);
+
+            return cleanText(statements.join(". "));
+          }
+
+          // Extract and clean all visible text on the page
           const rawText = document.body.innerText || "";
-          // Apply the filter and labeling functionality
           return filterAndLabelStatements(rawText);
         },
       },
@@ -39,7 +58,7 @@ document.getElementById("extract-text").addEventListener("click", () => {
 
           if (extractedText) {
             try {
-              // Step 1: Call /find-harmful to get the most harmful sentence
+              // Call /find-harmful to get the most harmful sentence
               const harmfulResponse = await fetch("http://localhost:5012/api/find-harmful", {
                 method: "POST",
                 headers: {
@@ -55,17 +74,13 @@ document.getElementById("extract-text").addEventListener("click", () => {
               const harmfulData = await harmfulResponse.json();
               const mostHarmfulSentence = harmfulData.mostHarmfulSentence;
 
-              // Step 2: Call /verify-classify with the most harmful sentence
+              // Call /verify-classify with the most harmful sentence
               const verifyResponse = await fetch("http://localhost:5012/api/verify-classify", {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
                 },
-                body: JSON.stringify({
-                  content: mostHarmfulSentence,
-                  // age: 25, // Example age
-                  // gender: "male" // Example gender
-                }),
+                body: JSON.stringify({ content: mostHarmfulSentence }),
               });
 
               if (!verifyResponse.ok) {
@@ -74,10 +89,12 @@ document.getElementById("extract-text").addEventListener("click", () => {
 
               const verifyData = await verifyResponse.json();
 
-              // Update the popup with the most harmful sentence and the message content directly
+              // Render the cleaned and formatted response
               document.getElementById("content").innerHTML = `
-                <strong>Harmful data:<br></strong> ${mostHarmfulSentence}<br/><br/>
-                ${verifyData.message}
+                <div class="response-box">
+                  <p class="harmful-sentence">⚠️ Harmful Data Detected: "${mostHarmfulSentence}"</p>
+                  <p class="response-message">${verifyData.message}</p>
+                </div>
               `;
             } catch (error) {
               console.error("Error:", error);

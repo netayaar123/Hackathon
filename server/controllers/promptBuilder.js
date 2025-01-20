@@ -24,18 +24,18 @@ const verifyAndClassifyContent = async (req, res) => {
 
         // Step 3: Handle classification cases
         if (classification === "truth") {
-            userMessage = "The statement is classified as truth.";
+            userMessage = `<p>The statement is classified as <strong>truth</strong>.</p>`;
         } else if (classification === "lie" || classification === "opinion") {
             // Include age and gender in the category prompt
             let categoryPrompt = `Classify the following statement into one of these categories: "False Nutrition Claims", "Unverified Medical Claims", "Eating Disorders Encouragement", "Harmful Diet Practices", "Body Image Issues", "Fat Shaming and Discrimination", "Nutritional Supplements", "Gender Inequality or Challenges", "Emotional Abuse in Relationships", "Women and Girls in Crisis Situations", "Self-Harm Encouragement", "Emotional Distress", "Stress and Depression Triggers", "Unplanned Pregnancy", "Relationship Challenges", "Exploring Sexual Identity or Orientation", "Sexual Health and Education", "Offensive or Inciteful Content Online", "Cyberbullying and Online Harassment", "Misinformation or Fake News", "Emotional or Physical Abuse in Relationships", "Trauma or Recovery". Only respond with one category. Statement: ${content}`;
 
             // Adjust category prompt based on age and gender
             if (age && gender) {
-                categoryPrompt = `Classify the following statement into one of these categories, considering the user's age (${age}) and gender (${gender}): "False Nutrition Claims", "Unverified Medical Claims", "Eating Disorders Encouragement", "Harmful Diet Practices", "Body Image Issues", "Fat Shaming and Discrimination", "Nutritional Supplements", "Gender Inequality or Challenges", "Emotional Abuse in Relationships", "Women and Girls in Crisis Situations", "Self-Harm Encouragement", "Emotional Distress", "Stress and Depression Triggers", "Unplanned Pregnancy", "Relationship Challenges", "Exploring Sexual Identity or Orientation", "Sexual Health and Education", "Offensive or Inciteful Content Online", "Cyberbullying and Online Harassment", "Misinformation or Fake News", "Emotional or Physical Abuse in Relationships", "Trauma or Recovery". Only respond with one category. Statement: ${content}`;
+                categoryPrompt = `Classify the following statement into one of these categories, considering the user's age (${age}) and gender (${gender}): ${categoryPrompt}`;
             } else if (age) {
-                categoryPrompt = `Classify the following statement into one of these categories, considering the user's age (${age}): "False Nutrition Claims", "Unverified Medical Claims", "Eating Disorders Encouragement", "Harmful Diet Practices", "Body Image Issues", "Fat Shaming and Discrimination", "Nutritional Supplements", "Gender Inequality or Challenges", "Emotional Abuse in Relationships", "Women and Girls in Crisis Situations", "Self-Harm Encouragement", "Emotional Distress", "Stress and Depression Triggers", "Unplanned Pregnancy", "Relationship Challenges", "Exploring Sexual Identity or Orientation", "Sexual Health and Education", "Offensive or Inciteful Content Online", "Cyberbullying and Online Harassment", "Misinformation or Fake News", "Emotional or Physical Abuse in Relationships", "Trauma or Recovery". Only respond with one category. Statement: ${content}`;
+                categoryPrompt = `Classify the following statement into one of these categories, considering the user's age (${age}): ${categoryPrompt}`;
             } else if (gender) {
-                categoryPrompt = `Classify the following statement into one of these categories, considering the user's gender (${gender}): "False Nutrition Claims", "Unverified Medical Claims", "Eating Disorders Encouragement", "Harmful Diet Practices", "Body Image Issues", "Fat Shaming and Discrimination", "Nutritional Supplements", "Gender Inequality or Challenges", "Emotional Abuse in Relationships", "Women and Girls in Crisis Situations", "Self-Harm Encouragement", "Emotional Distress", "Stress and Depression Triggers", "Unplanned Pregnancy", "Relationship Challenges", "Exploring Sexual Identity or Orientation", "Sexual Health and Education", "Offensive or Inciteful Content Online", "Cyberbullying and Online Harassment", "Misinformation or Fake News", "Emotional or Physical Abuse in Relationships", "Trauma or Recovery". Only respond with one category. Statement: ${content}`;
+                categoryPrompt = `Classify the following statement into one of these categories, considering the user's gender (${gender}): ${categoryPrompt}`;
             }
 
             // Get the category from LLM
@@ -56,14 +56,6 @@ const verifyAndClassifyContent = async (req, res) => {
                     ageGenderMessage = "This may affect young men.";
                 } else if (age >= 18 && gender === "Male") {
                     ageGenderMessage = "This may affect older men.";
-                } else if (age < 18) {
-                    ageGenderMessage = "This may affect young people.";
-                } else if (age >= 18) {
-                    ageGenderMessage = "This may affect older people.";
-                } else if (gender === "Female") {
-                    ageGenderMessage = "This may affect women.";
-                } else if (gender === "Male") {
-                    ageGenderMessage = "This may affect men.";
                 } else {
                     ageGenderMessage = "This may affect others.";
                 }
@@ -73,29 +65,35 @@ const verifyAndClassifyContent = async (req, res) => {
                 ageGenderMessage = gender === "Female" ? "This may affect women." : gender === "Male" ? "This may affect men." : "This may affect others.";
             }
 
-            // Check if the opinion is harmful and adjust the message accordingly
+            // Generate userMessage
+            const resourceInfo = categoryData && categoryData.length > 0
+                ? `<p>If you need help or more information about this topic, you can visit the following:<br><strong>Resource:</strong><br><a href="${categoryData[0]?.URL}" target="_blank">${categoryData[0]?.URL}</a></p><p>${categoryData[0]?.description}</p>`
+                : "<p>No specific resource found.</p>";
+
+            userMessage = `
+                <p>The statement is classified as a <strong>${classification}</strong>.</p>
+                <p>${ageGenderMessage}</p>
+                ${resourceInfo}
+            `;
+
+            // Harmful opinion check
             if (classification === "opinion") {
                 const harmfulOpinionPrompt = `Is the following opinion harmful? Answer with "yes" or "no". Statement: ${content}`;
                 const harmfulOpinionResponse = await generateResponse(harmfulOpinionPrompt);
                 const isHarmfulOpinion = harmfulOpinionResponse.trim().toLowerCase();
 
                 if (isHarmfulOpinion === "yes") {
-                    userMessage = `The statement is classified as a harmful opinion. ${ageGenderMessage} If you need help or more information about this topic, you can visit the following resource: <a href="${categoryData[0]?.URL}" target="_blank">${categoryData[0]?.URL}</a>. ${categoryData[0]?.description}`;
-                } else {
-                    userMessage = `The statement is classified as an opinion. ${ageGenderMessage}`;
-                }
-            } else {
-                if (categoryData && categoryData.length > 0) {
-                    const { URL, description } = categoryData[0];
-                    userMessage = `The statement is classified as a ${classification}. ${ageGenderMessage} If you need help or more information about this topic, you can visit the following resource: <a href="${URL}" target="_blank">${URL}</a>. ${description}`;
-                } else {
-                    userMessage = `The statement is classified as a ${classification}. ${ageGenderMessage} No specific resource found.`;
+                    userMessage = `
+                        <p>The statement is classified as a <strong>harmful opinion</strong>.</p>
+                        <p>${ageGenderMessage}</p>
+                        ${resourceInfo}
+                    `;
                 }
             }
         } else if (classification === "none") {
-            userMessage = "The statement could not be classified or confidence was too low.";
+            userMessage = `<p>The statement could not be classified or confidence was too low.</p>`;
         } else {
-            userMessage = "Unable to classify the statement. Please try again.";
+            userMessage = `<p>Unable to classify the statement. Please try again.</p>`;
         }
 
         // Send the response back to the client with the category in a separate field
