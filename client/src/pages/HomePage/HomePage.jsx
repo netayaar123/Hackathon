@@ -17,8 +17,12 @@ const Home = () => {
   const handleValidation = async () => {
     setIsLoading(true); // Show loading animation
     const text = document.getElementById("content-input").value;
-    const age = document.getElementById("age-input").value || null;
-    const gender = document.getElementById("gender-input").value || null;
+    const ageInput = document.getElementById("age-input");
+    const genderInput = document.getElementById("gender-input");
+    
+    // Gracefully handle age/gender if the user never enters them
+    const age = ageInput?.value || null;  
+    const gender = genderInput?.value || null;
 
     try {
       const response = await axiosInstance.post('/verify-classify', {
@@ -63,25 +67,23 @@ const Home = () => {
           defaultValue={userContent} // Pre-fill the text box with the last input
         ></textarea>
 
-        {/* Only show age and gender inputs if no response has been generated */}
-        {!hasResponse && (
-          <div className={styles.inputsRow}>
-            <input
-              type="number"
-              id="age-input"
-              placeholder="Enter your age (optional)"
-              className={styles.input}
-            />
-            <select id="gender-input" className={styles.input} defaultValue="">
-              <option value="" disabled>
-                Select your gender (optional)
-              </option>
-              <option value="Male">Male</option>
-              <option value="Female">Female</option>
-              <option value="Other">Other</option>
-            </select>
-          </div>
-        )}
+        {/* Always render age and gender inputs */}
+        <div className={styles.inputsRow}>
+          <input
+            type="number"
+            id="age-input"
+            placeholder="Enter your age (optional)"
+            className={styles.input}
+          />
+          <select id="gender-input" className={styles.input} defaultValue="">
+            <option value="" disabled>
+              Select your gender (optional)
+            </option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
 
         <button className={styles.button} onClick={handleValidation}>
           Validate Content
