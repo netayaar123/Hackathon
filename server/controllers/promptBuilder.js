@@ -1,4 +1,4 @@
-import { generateResponse } from '../LLM/main.mjs';
+import { generateResponse } from '../../services/LLM/generativeAI.mjs';
 import { getContactInfoByCategory } from '../../Database/database.js';
 
 const verifyAndClassifyContent = async (req, res) => {

@@ -1,5 +1,4 @@
-import { generateResponse } from '../LLM/main.mjs';
-
+import { generateResponse } from '../../services/LLM/generativeAI.mjs';
 const findMostHarmfulSentence = async (req, res) => {
     const { content } = req.body;
 
