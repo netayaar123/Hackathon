@@ -3,13 +3,15 @@ chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     {
       target: { tabId: tabs[0].id },
       func: () => {
+        // Function to clean and format text
         function cleanText(text) {
           return text
-            .replace(/\s+/g, " ")
-            .replace(/\n/g, " ")
-            .trim();
+            .replace(/\s+/g, " ") // Replace multiple spaces/newlines with a single space
+            .replace(/\n/g, " ") // Replace newlines with spaces
+            .trim(); // Remove leading/trailing spaces
         }
 
+        // Function to filter and label statements, removing irrelevant lines
         function filterAndLabelStatements(text) {
           const statements = text
             .split("\n")
@@ -34,26 +36,27 @@ chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
                   "sign me up",
                   "more like this",
                   "go premium",
-                ].some((excluded) => line.toLowerCase().includes(excluded))
+                ].some((excluded) => line.toLowerCase().includes(excluded)) // Filter out unwanted words
             )
-            .join(" ")
-            .split(/[.!?]+/)
+            .join(" ") // Join the filtered lines
+            .split(/[.!?]+/) // Split into sentences
             .map((sentence) => sentence.trim())
-            .filter((sentence) => sentence.length > 0);
+            .filter((sentence) => sentence.length > 0); // Remove empty sentences
 
-          return cleanText(statements.join(". "));
+          return cleanText(statements.join(". ")); // Return cleaned and joined sentences
         }
 
-        const rawText = document.body.innerText || "";
-        return filterAndLabelStatements(rawText);
+        const rawText = document.body.innerText || ""; // Extract the raw text from the page
+        return filterAndLabelStatements(rawText); // Return the filtered and labeled statements
       },
     },
     async (results) => {
       if (results && results[0] && results[0].result) {
-        const extractedText = results[0].result;
+        const extractedText = results[0].result; // Get the extracted text from results
 
         if (extractedText) {
           try {
+            // Send the extracted text to the backend to find the most harmful sentence
             const harmfulResponse = await fetch("http://localhost:5012/api/find-harmful", {
               method: "POST",
               headers: {
@@ -69,6 +72,7 @@ chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
             const harmfulData = await harmfulResponse.json();
             const mostHarmfulSentence = harmfulData.mostHarmfulSentence;
 
+            // Verify the harmful sentence with the backend
             const verifyResponse = await fetch("http://localhost:5012/api/verify-classify", {
               method: "POST",
               headers: {
@@ -83,6 +87,7 @@ chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
 
             const verifyData = await verifyResponse.json();
 
+            // Display the harmful sentence and the response message
             document.getElementById("content").innerHTML = `
               <div class="response-box">
                 <p class="harmful-sentence">⚠ Harmful Data Detected: "${mostHarmfulSentence}"</p>
@@ -103,6 +108,7 @@ chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
   );
 });
 
+// Loading animation for dots
 document.addEventListener("DOMContentLoaded", () => {
   const loadingDots = document.getElementById("loading-dots");
   let dotCount = 0;

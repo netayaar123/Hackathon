@@ -10,7 +10,7 @@ const Home = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    document.title = "The Reality Check: Validate Content";
+    document.title = "The Reality Check: Validate Content"; // Set document title on mount
   }, []);
 
   useEffect(() => {
@@ -19,17 +19,17 @@ const Home = () => {
       elements.forEach((el) => {
         const rect = el.getBoundingClientRect();
         if (rect.top < window.innerHeight - 100) {
-          el.classList.add(styles.visible);
+          el.classList.add(styles.visible); // Add 'visible' class when element is in view
         }
       });
     };
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll); // Set scroll event listener
+    return () => window.removeEventListener("scroll", handleScroll); // Cleanup on unmount
   }, []);
 
   const handleValidation = async () => {
-    setIsLoading(true);
+    setIsLoading(true); // Set loading state before validation
     const text = document.getElementById("content-input").value;
     const ageInput = document.getElementById("age-input");
     const genderInput = document.getElementById("gender-input");
@@ -45,15 +45,15 @@ const Home = () => {
       });
       setResponseMessage(response.data.message || "Validation successful!");
       setUserContent(text);
-      setHasResponse(true);
+      setHasResponse(true); // Set response received flag
       setErrorMessage("");
     } catch (error) {
       console.error("Error during validation:", error);
       setResponseMessage("");
       setErrorMessage("Failed to validate content. Please try again.");
-      setHasResponse(false);
+      setHasResponse(false); // Set response failure flag
     } finally {
-      setIsLoading(false);
+      setIsLoading(false); // Reset loading state after request
     }
   };
 
@@ -76,7 +76,7 @@ const Home = () => {
         <textarea
           id="content-input"
           placeholder="Validate your content here..."
-          className={hasResponse ? styles.textareaSmall : styles.textarea}
+          className={hasResponse ? styles.textareaSmall : styles.textarea} // Adjust textarea size based on response
           defaultValue={userContent}
         ></textarea>
 
@@ -106,12 +106,12 @@ const Home = () => {
         <div className={`${styles.responseSection} ${styles.parallax}`}>
           <div
             className={styles.responseBox}
-            dangerouslySetInnerHTML={{ __html: responseMessage }}
+            dangerouslySetInnerHTML={{ __html: responseMessage }} // Display response message
           ></div>
         </div>
       )}
 
-      {errorMessage && <div className={styles.errorMessage}>{errorMessage}</div>}
+      {errorMessage && <div className={styles.errorMessage}>{errorMessage}</div>} {/* Display error message */}
     </div>
   );
 };
