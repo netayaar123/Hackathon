@@ -43,71 +43,44 @@
       background-color: #ff3385;
     }
 
-    #content {
-      margin-top: 20px;
-      white-space: normal;
-      overflow: auto;
-      max-height: 300px;
+    /* Styles for dynamically added response-box */
+    .response-box {
+      background-color: #fff0f5;
       border: 1px solid #ff99cc;
-      padding: 20px;
-      background: #fff0f5;
-      border-radius: 5px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      font-size: 1em;
-      line-height: 1.6;
-      word-wrap: break-word;
-
-      /* Placeholder text style */
-      text-align: center;
-      /* Center align the placeholder text */
-      font-style: italic;
-      /* Make the placeholder text italic */
-      color: #525050;
-      /* Use a light gray color for the placeholder text */
-      font-size: 0.8em;
-      /* the font size 
-
+      border-radius: 8px;
+      padding: 15px;
+      margin-top: 15px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      text-align: left;
     }
 
+    /* Harmful sentence emphasis */
+    .harmful-sentence {
+      font-weight: bold;
+      color: #d9534f;
+      font-size: 1.2em;
+      margin-bottom: 15px;
+      text-align: center;
+    }
 
-    /* Styles for dynamically added response-box */
-      .response-box {
-        background-color: #fff0f5;
-        border: 1px solid #ff99cc;
-        border-radius: 8px;
-        padding: 15px;
-        margin-top: 15px;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-        text-align: left;
-      }
+    /* Clean and justified response message */
+    .response-message {
+      font-size: 1em;
+      color: #4a4a4a;
+      line-height: 1.6;
+      text-align: justify;
+    }
 
-      /* Harmful sentence emphasis */
-      .harmful-sentence {
-        font-weight: bold;
-        color: #d9534f;
-        font-size: 1.2em;
-        margin-bottom: 15px;
-        text-align: center;
-      }
+    /* Links inside response-message */
+    .response-message a {
+      color: #ff66b2;
+      text-decoration: none;
+      font-weight: bold;
+    }
 
-      /* Clean and justified response message */
-      .response-message {
-        font-size: 1em;
-        color: #4a4a4a;
-        line-height: 1.6;
-        text-align: justify;
-      }
-
-      /* Links inside response-message */
-      .response-message a {
-        color: #ff66b2;
-        text-decoration: none;
-        font-weight: bold;
-      }
-
-      .response-message a:hover {
-        text-decoration: underline;
-      }
+    .response-message a:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
 
