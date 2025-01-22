@@ -3,7 +3,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import rubberDuckRoutes from './routes/rubberDucks.js'; // Import the routes
+import rubberDuckRoutes from './routes/classificationRoutes.js'; // Import the routes
 import { connectToDatabase } from '../Database/database.js'; // Import the database connection function
 
 // Use import.meta.url instead of __filename
