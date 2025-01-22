@@ -61,13 +61,13 @@ Here is an overview of the system architecture:
 - `npm` (typically installed automatically with Node.js).
   - Version 10.x or higher required (update with `npm install -g npm@latest --no-optional`).
 
----
-
 ### Clone the Repository
+
 To get started with this project, clone the repository to your local machine:
 
 ```bash
 git clone https://github.com/danielush/Hackathon.git
+```
 
 ---
 
@@ -97,6 +97,40 @@ git clone https://github.com/danielush/Hackathon.git
    ```bash
    npm install
    ```
+
+---
+
+### Adding the Extension to Google Chrome
+
+To add the browser extension to Google Chrome for testing and usage, follow these steps:
+
+#### Steps to Install the Extension:
+
+1. **Open the Chrome Extensions Menu:**
+   - Click the puzzle icon (Extensions) located on the right side of the search bar in Google Chrome.
+
+2. **Choose "Load Unpacked":**
+   - In the dropdown menu, click **Manage Extensions** to go to the Chrome Extensions page:
+     ```
+     chrome://extensions/
+     ```
+   - On the Extensions page, click the **Load unpacked** button in the top-left corner.
+
+3. **Navigate to the Extension Directory:**
+   - In the file dialog that opens, navigate to the `services/extensions` directory within your cloned project folder.
+   - Select the folder and click **Open**.
+
+4. **Confirm Extension Installation:**
+   - After loading, the extension will appear on the Chrome Extensions page.
+
+5. **Configure and Pin the Extension:**
+   - Click the **Details** button for the newly added extension.
+   - On the details page, locate and enable the **Pin to Toolbar** option.
+   - This will add the extension icon to your browser toolbar for easy access.
+
+6. **Enjoy Your Extension:**
+   - Navigate to any webpage and click on your extension icon in the Chrome toolbar to activate it.
+   - The extension will analyze the page, identify harmful content, and provide professional help suggestions.
 
 ---
 
