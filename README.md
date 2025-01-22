@@ -12,7 +12,7 @@ Our project includes two main components:
 1. **Web Application:**
    - Girls can type in potentially harmful content they encounter online to verify its intent.
    - The input is sent to an LLM to analyze the intent.
-   - Based on the analysis, relevant professional help (e.g., mental health, cyberbullying support) is retrieved from the database and           displayed to the user.
+   - Based on the analysis, relevant professional help (e.g., mental health, cyberbullying support) is retrieved from the database and displayed to the user.
 
 2. **Browser Extension:**
    - The extension scans the content of any webpage.
@@ -21,6 +21,14 @@ Our project includes two main components:
    - Sends it to the backend, where it is processed with the same logic as the web application to return relevant professional help.
 
 This solution empowers young girls to assess online content safely and access support when needed.
+
+---
+
+## Architecture
+
+Here is an overview of the system architecture:
+
+![Architecture Diagram](images/architecture_image.png)
 
 ---
 
@@ -60,7 +68,6 @@ To get started with this project, clone the repository to your local machine:
 
 ```bash
 git clone https://github.com/danielush/Hackathon.git
-```
 
 ---
 
