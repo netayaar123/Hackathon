@@ -3,10 +3,9 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import rubberDuckRoutes from './routes/classificationRoutes.js'; // Import the routes
-import { connectToDatabase } from '../Database/database.js'; // Import the database connection function
+import rubberDuckRoutes from './routes/classificationRoutes.js';
+import { connectToDatabase } from '../Database/database.js';
 
-// Use import.meta.url instead of __filename
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -16,24 +15,21 @@ const app = express();
 
 // Middleware
 app.use(express.json());
-app.use('/images', express.static(path.join(__dirname, 'images'))); // Serve static images
+app.use('/images', express.static(path.join(__dirname, 'images')));
 
 app.use(cors({
   origin: process.env.CLIENT_URL
 }));
 
-// Base route to test if the server is running
 app.get('/', (req, res) => {
   res.send('Server is running!');
 });
 
-// Use the routes file for /ducks routes
 app.use('/api', rubberDuckRoutes);
 
-// Function to start the server after connecting to the database
 async function startServer() {
   try {
-    await connectToDatabase(); // Connect to the database
+    await connectToDatabase();
     console.log('Connected to the database successfully.');
 
     const PORT = process.env.PORT || 5012;
@@ -42,9 +38,8 @@ async function startServer() {
     });
   } catch (error) {
     console.error('Failed to connect to the database:', error.message);
-    process.exit(1); // Exit the process if the database connection fails
+    process.exit(1);
   }
 }
 
-// Start the server
 startServer();

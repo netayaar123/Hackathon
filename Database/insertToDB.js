@@ -4,11 +4,9 @@ const ContactInfo = require('./models/contactInfo');
 
 async function insertCategories() {
   try {
-    // Step 1: Connect to the MongoDB database
     await connectToDatabase();
     console.log('Connected to database.');
 
-    // Step 2: Define the list of categories with their URLs and descriptions
     const categories = [
       {
         category: 'False Nutrition Claims',
@@ -122,7 +120,6 @@ async function insertCategories() {
       },
     ];
 
-  // Step 3: Loop through each category in the list and insert it into the database
   for (const category of categories) {
     const result = await InsertContactInfo(data)(category); 
     console.log(result.message); // Log the result of the insertion
@@ -132,11 +129,9 @@ async function insertCategories() {
 } catch (err) {
   console.error('Error processing categories:', err.message); // Log any unexpected errors
 } finally {
-  // Step 4: Disconnect from the database
   await mongoose.disconnect();
   console.log('Disconnected from database.');
 }
 }
 
-// Execute the function to insert categories into the database
 insertCategories();

@@ -6,55 +6,157 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Reality Checker</title>
   <!-- Link to Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
   <style>
     /* General body styles */
-    body {
-      font-family: 'Playfair Display', serif;
-      margin: 10px;
-      max-width: 700px;
-      /* Increased width */
-      background-color: #ffe6f2;
-      color: #4a4a4a;
+    body::before,
+    body::after {
+      content: '';
+      /* Creates a visual element */
+      position: absolute;
+      top: -50px;
+      left: -50px;
+      width: 100px;
+      height: 100px;
+      background: rgba(255, 102, 178, 0.3);
+      /* Soft pink particle for the first ball */
+      border-radius: 50%;
+      /* Makes it a circle */
+      animation: floatParticles 8s infinite ease-in-out alternate;
+      /* Floating animation */
     }
 
+    body::after {
+      top: 100%;
+      /* Position for the second ball */
+      left: 80%;
+      /* Position for the second ball */
+      background: rgba(100, 50, 255, 0.3);
+      /* Soft purple particle for the second ball */
+      animation-delay: 4s;
+      /* Adds a delay to stagger the animations */
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 10px auto;
+      max-width: 350px;
+      max-height: 325px;
+      background: linear-gradient(135deg, #eee4f9, #e6d9f5);
+      /* Adjusted gradient for more purple */
+      border-radius: 15px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      color: #4a4a4a;
+      overflow: hidden;
+      /* To contain floating particles */
+      position: relative;
+    }
+
+    /* Title styling */
     h1 {
       text-align: center;
-      color: #ff66b2;
       margin-bottom: 20px;
-      font-size: 23px;
+      font-size: 28px;
+      font-weight: 600;
+      background: linear-gradient(90deg, #ff66b2, #8b66ff);
+      /* Text gradient */
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+      position: relative;
     }
 
-    button {
-      display: block;
-      margin: 0 auto;
-      padding: 10px 20px;
-      background-color: #ff66b2;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      font-size: 16px;
-      font-family: 'Arial', sans-serif;
-      cursor: pointer;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    button:hover {
-      background-color: #ff3385;
-    }
-
-    /* Styles for dynamically added response-box */
-    .response-box {
-      background-color: #fff0f5;
+    /* Content box styling */
+    #content {
+      margin-top: 20px;
+      text-align: center;
+      white-space: normal;
+      overflow: auto;
+      overflow-x: hidden;
+      max-height: 300px;
       border: 1px solid #ff99cc;
-      border-radius: 8px;
-      padding: 15px;
-      margin-top: 15px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-      text-align: left;
+      padding: 20px;
+      background: #ffeaf3;
+      /* Changed to lighter pink */
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(255, 153, 204, 0.3);
+      font-size: 1.2em;
+      line-height: 1.6;
+      font-style: normal;
+      color: #4a4a4a;
+      animation: fadeIn 1s ease-in-out, boxPulse 3s infinite;
+      /* Entry and glow pulse */
     }
 
-    /* Harmful sentence emphasis */
+    /* Pulsing glow animation for the content box */
+    @keyframes boxPulse {
+
+      0%,
+      100% {
+        box-shadow: 0 4px 12px rgba(255, 153, 204, 0.3), 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      50% {
+        box-shadow: 0 6px 14px rgba(255, 153, 204, 0.5), 0 4px 12px rgba(0, 0, 0, 0.2);
+      }
+    }
+
+    /* Loading dots animation */
+    #loading-dots {
+      font-weight: bold;
+      color: #ff3385;
+      font-size: 1.5em;
+      margin-left: 5px;
+      display: inline-block;
+      animation: bounceDots 1.5s infinite, colorCycle 3s infinite;
+      /* Bounce and color shift */
+    }
+
+    /* Bouncing effect for dots */
+    @keyframes bounceDots {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-8px);
+      }
+    }
+
+    /* Color cycling for dots */
+    @keyframes colorCycle {
+      0% {
+        color: #ff3385;
+      }
+
+      33% {
+        color: #ff99cc;
+      }
+
+      66% {
+        color: #8b66ff;
+      }
+
+      100% {
+        color: #ff3385;
+      }
+    }
+
+    /* Fade-in animation for the content box */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
     .harmful-sentence {
       font-weight: bold;
       color: #d9534f;
@@ -62,32 +164,12 @@
       margin-bottom: 15px;
       text-align: center;
     }
-
-    /* Clean and justified response message */
-    .response-message {
-      font-size: 1em;
-      color: #4a4a4a;
-      line-height: 1.6;
-      text-align: justify;
-    }
-
-    /* Links inside response-message */
-    .response-message a {
-      color: #ff66b2;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    .response-message a:hover {
-      text-decoration: underline;
-    }
   </style>
 </head>
 
 <body>
-  <h1>Reality Check ✔🌸</h1>
-  <button id="extract-text">check</button>
-  <div id="content">click to display response</div>
+  <h1>Reality Check ✔</h1>
+  <div id="content">loading<span id="loading-dots"></span></div>
   <script src="popup.js"></script>
 </body>
 

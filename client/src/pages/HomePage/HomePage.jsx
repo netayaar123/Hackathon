@@ -3,17 +3,16 @@ import styles from "./Home.module.css";
 import axiosInstance from "../../services/api";
 
 const Home = () => {
-  const [responseMessage, setResponseMessage] = useState(""); // Server response
-  const [hasResponse, setHasResponse] = useState(false); // Tracks if response exists
-  const [errorMessage, setErrorMessage] = useState(""); // Tracks error state
-  const [userContent, setUserContent] = useState(""); // Tracks user input content
-  const [isLoading, setIsLoading] = useState(false); // Tracks loading state
+  const [responseMessage, setResponseMessage] = useState("");
+  const [hasResponse, setHasResponse] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [userContent, setUserContent] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     document.title = "The Reality Check: Validate Content";
   }, []);
 
-  // Parallax scrolling effect
   useEffect(() => {
     const handleScroll = () => {
       const elements = document.querySelectorAll(`.${styles.parallax}`);
@@ -30,7 +29,7 @@ const Home = () => {
   }, []);
 
   const handleValidation = async () => {
-    setIsLoading(true); // Show loading animation
+    setIsLoading(true);
     const text = document.getElementById("content-input").value;
     const ageInput = document.getElementById("age-input");
     const genderInput = document.getElementById("gender-input");
@@ -69,7 +68,7 @@ const Home = () => {
 
       <h1 className={`${styles.headline} ${styles.parallax}`}>The Reality Check: Validate Content, Stay Safe</h1>
       <p className={`${styles.welcomeText} ${styles.parallax}`}>
-        Welcome to BeSafe! This tool helps validate content for accuracy and safety.
+        Welcome to The Reality Check! This tool helps validate content for accuracy and safety.
         If necessary, it will connect you with a specialist for further assistance.
       </p>
 
