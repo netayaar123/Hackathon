@@ -66,7 +66,7 @@ Here is an overview of the system architecture:
 To get started with this project, clone the repository to your local machine:
 
 ```bash
-git clone https://github.com/danielush/Hackathon.git
+https://github.com/netayaar123/Hackathon.git
 ```
 
 ---
